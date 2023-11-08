@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Github repos </title>
+	<style type="text/css">
+		section {
+			padding: 2rem;
+		}
+		h1 {
+			text-align: center;
+		}
+		form {
+			max-width: clamp(200px, 55%, 400px);
+			margin: auto;
+			padding: 1rem .5rem;
+			border: 2px solid black;
+			border-radius: 4px;
+		}
+		label {
+			font-size: 1.3rem;
+			display: inline-block;
+			margin-bottom: .5rem;
+		}
+		span {
+			color: red;
+		}
+		input[type="text"] {
+			padding: .5rem;
+			border-radius: 4px;
+		}
+		button {
+			background: yellow;
+			color: black;
+			border: 1px solid black;
+			padding: .5rem;
+			border-radius: 4px;
+		}
+		button:hover {
+			cursor: pointer;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<h1>Get github repos by username </h1>
+		<form action="" method="POST" id="myForm">
+			<label>Enter the username </label><br>
+			<input type="text" id="username" placeholder="username">
+			<button>Search </button>
+			<h2 id="title"></h2><br>
+			<ul id="list">
+				<!-- repositories -->
+			</ul>
+		</form>
+	</section>
+
+	<script type="text/javascript">
+		const list = document.getElementById('list');
+		const form = document.getElementById('myForm'); 
+		const userForm = document.getElementById('username');
+		const title = document.getElementById('title');
+		form.addEventListener('submit', async function(e) {
+			e.preventDefault();
+			list.innerHTML = "";
+			const username = userForm.value;
+			const response = await fetch("https://api.github.com/users/"+username+"/repos");
+			const repos = await response.json();
+			if(response.status != 404) {
+				title.innerHTML = `All repositories of <span>${username}</span>`
+				repos.map(repo => {
+					list.innerHTML += `<li><a href="https://github.com/${username}/${repo.name}">${repo.name}</a></li><br>`
+				}) 
+			}else {
+				title.innerHTML = `<span>User Not Found !</span></span>`
+			}	
+		});
+	</script>
+</body>
+</html>
