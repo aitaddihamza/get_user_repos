@@ -1,2 +1,2 @@
 ---
-## micro-project just for having fun :)__
+## having fun with js :)
